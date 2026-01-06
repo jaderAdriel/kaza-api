@@ -1,5 +1,8 @@
 
-export class UserRepository {
-    constructor () {
-    }
+export interface UserRepository {
+    
+}
+
+export class UserRepositoryImpl implements UserRepository {
+
 }
