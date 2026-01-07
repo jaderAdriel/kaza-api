@@ -10,8 +10,8 @@
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
-    
-    
+    "rootDir": ".",
+    "outDir": "./dist",
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
