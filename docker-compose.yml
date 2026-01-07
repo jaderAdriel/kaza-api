@@ -1,11 +1,35 @@
 services:
+
+  app-dev:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      target: development
+
+    container_name: kaza-api-dev
+    ports:
+      - "${APP_PORT:-5000}:5000"
+    environment:
+      NODE_ENV: development
+      DOCKER_ENV: 'true'
+      MONGO_URI: mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongodb:27017/${MONGO_DB}?authSource=admin
+    volumes:
+      - ./src:/app/src:ro
+      - ./package.json:/app/package.json
+
+    depends_on:
+      - mongodb
+
   mongodb:
     image: mongo:latest
     container_name: mongodb
     restart: always
+    command: ["mongod", "--quiet"]
     environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DB}
     ports:
       - "27017:27017"
     volumes:
