@@ -1,6 +1,6 @@
 import { User } from "@/domain/entities/User.js";
 import type { UserRepository } from "../repositories/UserRepository.js";
-import { UserCreateDto, UserResponseDto } from "@/dto/user.dto.js";
+import { CreateUserDto, UserResponseDto } from "@/dto/user.dto.js";
 import { UserMapper } from "@/mapper/UserMapper.js";
 
 export class UserService {
@@ -26,13 +26,16 @@ export class UserService {
         return UserMapper.toResponse(user);
     }
 
-    public async save(user: UserCreateDto): Promise<UserResponseDto> {
+    public async save(userDto: CreateUserDto): Promise<UserResponseDto> {
+        
+        const user = UserMapper.toEntity(userDto);
+
         const newUser = await this.userRepository.save(user);
 
         return UserMapper.toResponse(newUser);
     }
 
     public async delete(id: string): Promise<void> {
-        await this.userRepository.delete(id);
+        return await this.userRepository.delete(id);
     }
 }
