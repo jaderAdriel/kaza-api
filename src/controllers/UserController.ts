@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import type { UserService } from "../services/UserService.js";
-import { UserCreateDto, UserResponseDto } from "@/dto/user.dto.js";
+import { CreateUserDto, UserResponseDto } from "@/dto/user.dto.js";
 
 export class UserController {
     private userService: UserService;
@@ -12,26 +12,26 @@ export class UserController {
     public async findAll(req: Request, res: Response) : Promise<Response<UserResponseDto[]>> {
         const users = await this.userService.findAll();
 
-        return res.json(users).status(200);
+        return res.status(200).json(users);
     }
 
     public async get(req: Request, res: Response, id: string) : Promise<Response<UserResponseDto[]>> {
         const users = await this.userService.get(id);
 
-        return res.json(users).status(200);
+        return res.status(200).json(users);
     }
 
-    public async post(req: Request, res: Response) : Promise<Response<UserResponseDto[]>> {
-        const dto: UserCreateDto = req.body;
+    public async create(req: Request, res: Response) : Promise<Response<UserResponseDto[]>> {
+        const dto = req.body as CreateUserDto;
         
         const users = await this.userService.save(dto);
 
-        return res.json(users).status(201);
+        return res.status(201).json(users);
     }
 
     public async delete(req: Request, res: Response, id: string) : Promise<Response<void>> {
-        const users = await this.userService.delete(id);
+        await this.userService.delete(id);
 
-        return res.status(204);
+        return res.status(204).send();
     }
 }
