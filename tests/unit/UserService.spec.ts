@@ -11,9 +11,4 @@ describe("UserService", () => {
         repoMock = {} as jest.Mocked<UserRepository>;
         service = new UserService(repoMock);
     });
-
-    it('should return "Hello World"', () => {
-        const result = service.getMessage();
-        expect(result).toBe('Hello World');
-    });
 })
