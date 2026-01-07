@@ -5,7 +5,17 @@ import mongoose from 'mongoose';
 const routes = Router();
 
 routes.get('/health', (req, res) => {
-    res.send(mongoose.connection.readyState)
+
+    const dbState = mongoose.connection.readyState;
+    const health = {
+        database: "unhealthy",
+        api: "healthy"
+    }
+
+    if (dbState == 1) health.database = "healthy"
+    if (dbState == 2) health.database = "connecting"
+    
+    res.send(health)
 })
 
 routes.use('/users', userRoutes);
