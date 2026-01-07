@@ -1,17 +1,19 @@
 import { UserService } from "@/services/UserService";
 import type { UserRepository } from "@/repositories/UserRepository";
 import { UserMapper } from "@/mapper/UserMapper";
-import { User } from "@/domain/entities/User";
+import { UserEntity, UserProps } from "@/domain/entities/User";
+import { HashService } from "@/services/HashService";
 
 describe("UserService", () => {
     let repoMock: jest.Mocked<UserRepository>;
     let service: UserService;
 
-    const mockUser: User = { 
+    const mockUser: UserEntity = UserEntity.make({ 
         id: "1", 
         name: "Jeca", 
-        email: "jeca@at.com" 
-    };
+        email: "jeca@at.com",
+        hashedPassword: "testepass"
+    }); 
 
     beforeEach(() => {
         repoMock = {
@@ -21,7 +23,7 @@ describe("UserService", () => {
             delete: jest.fn(),
         } as unknown as jest.Mocked<UserRepository>;
 
-        service = new UserService(repoMock);
+        service = new UserService(repoMock, new HashService());
     });
 
     describe("findAll", () => {
@@ -32,7 +34,7 @@ describe("UserService", () => {
 
             expect(repoMock.findAll).toHaveBeenCalledTimes(1);
             expect(result).toHaveLength(1);
-            expect(result[0]?.email).toBe(mockUser.email);
+            expect(result[0]?.email).toBe(mockUser.getEmail());
         });
     });
 

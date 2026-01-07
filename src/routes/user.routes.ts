@@ -4,9 +4,11 @@ import { Router } from "express";
 import { MongoUserRepository } from "@/infrastructure/database/mongodb/repositories/MongoUserRepository";
 import { validate } from "@/middlewares/validate";
 import { CreateUserSchema } from "@/dto/user.dto";
+import { HashService } from "@/services/HashService";
 
 const userRepository = new MongoUserRepository();
-const userService = new UserService(userRepository);
+const hashService = new HashService();
+const userService = new UserService(userRepository, hashService);
 const userController = new UserController(userService);
 
 const userRoutes = Router();

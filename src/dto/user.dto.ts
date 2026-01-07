@@ -8,6 +8,14 @@ export const CreateUserSchema = z.object({
 
 export type CreateUserDto = z.infer<typeof CreateUserSchema>;
 
+
+export const UpdateUserSchema = z.object({
+  name: z.string().min(3, "Nome deve ter no mínimo 3 caracteres"),
+  email: z.string().nonempty("E-mail inválido"),
+});
+
+export type UpdateUserDto = z.infer<typeof UpdateUserSchema>;
+
 export interface UserResponseDto {
     id: string,
     name: string,
