@@ -1,11 +1,11 @@
 import { User } from "@/domain/entities/User";
-import { UserCreateDto, UserResponseDto } from "@/dto/user.dto";
+import { CreateUserDto, UserResponseDto } from "@/dto/user.dto";
 
 export class UserMapper {
 
     static toResponse(user: User): UserResponseDto {
-        if (!user.id) {
-            throw new Error("User without id");
+        if (user.id == null) {
+            throw new Error("Invalid user: user without id");
         }
         
         return {
@@ -19,8 +19,9 @@ export class UserMapper {
         return users.map(user => this.toResponse(user));
     }
 
-    static toEntity(userDto: UserCreateDto) : User {
+    static toEntity(userDto: CreateUserDto) : User {
         return {
+            id: null,
             name: userDto.name,
             email: userDto.email,
         }

@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 export interface User {
-    id?: string,
+    id: string | null,
     name: string,
     email: string,
     hashedPassword?: string

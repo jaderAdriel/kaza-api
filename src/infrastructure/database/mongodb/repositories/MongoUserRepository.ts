@@ -6,9 +6,7 @@ export class MongoUserRepository implements UserRepository {
     public async findAll(): Promise<User[]> {
         const usersDoc: UserDocument[] = await UserModel.find().lean();
 
-        usersDoc.map((userDoc) => this.userDocToEntity(userDoc))
-
-        return usersDoc;
+        return usersDoc.map((userDoc) => this.userDocToEntity(userDoc))
     }
 
     public async get(id: string): Promise<User | null> {
@@ -26,11 +24,14 @@ export class MongoUserRepository implements UserRepository {
 
     public async delete(id: string): Promise<void> {
         await UserModel.findByIdAndDelete(id);
+        return;
     }
 
     private userDocToEntity(userDoc: UserDocument): User {
+
         return {
-            ...userDoc,
+            name: userDoc.name,
+            email: userDoc.email,
             id: userDoc._id.toString()
         }
     }

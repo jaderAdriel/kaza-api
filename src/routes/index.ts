@@ -18,6 +18,6 @@ routes.get('/health', (req, res) => {
     res.send(health)
 })
 
-routes.use('/users', userRoutes);
+routes.use('/api/users', userRoutes);
 
 export { routes };
