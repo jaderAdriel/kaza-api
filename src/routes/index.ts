@@ -1,6 +1,7 @@
 import { response, Router } from 'express';
 import { userRoutes } from './user.routes.js';
 import mongoose from 'mongoose';
+import { authRoutes } from './auth.routes.js';
 
 const routes = Router();
 
@@ -19,5 +20,6 @@ routes.get('/health', (req, res) => {
 })
 
 routes.use('/api/users', userRoutes);
+routes.use('/api/auth', authRoutes );
 
 export { routes };

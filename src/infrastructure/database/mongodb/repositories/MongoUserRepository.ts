@@ -3,6 +3,14 @@ import { UserRepository } from "@/repositories/UserRepository";
 import { UserDocument, UserModel } from "../models/UserModel";
 
 export class MongoUserRepository implements UserRepository {
+    public async findOneBy(query: Record<string, any>): Promise<UserEntity | null> {
+        const userDoc: UserDocument | null = await UserModel.findOne(query).lean();
+
+        if (userDoc === null) return null;
+
+        return this.userDocToEntity(userDoc);
+    }
+
     public async findAll(): Promise<UserEntity[]> {
         const usersDoc: UserDocument[] = await UserModel.find().lean();
 

@@ -6,8 +6,8 @@ import { validate } from "@/middlewares/validate";
 import { CreateUserSchema } from "@/dto/user.dto";
 import { HashService } from "@/services/HashService";
 
-const userRepository = new MongoUserRepository();
-const hashService = new HashService();
+export const userRepository = new MongoUserRepository();
+export const hashService = new HashService();
 const userService = new UserService(userRepository, hashService);
 const userController = new UserController(userService);
 
