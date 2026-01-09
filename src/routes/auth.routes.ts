@@ -1,14 +1,10 @@
 import { Router } from "express";
-import { AuthService } from "@/services/AuthService";
-import { userRepository, hashService } from "./user.routes";
-import { TokenService } from "@/services/TokenService";
 import { AuthController } from "@/controllers/AuthController";
-import { validate } from "@/middlewares/validate";
+import { validate } from "@/middlewares/validate.middleware";
 import { SignInRequestSchema } from "@/dto/auth.dto"
+import { serviceFactory } from "@/app";
 
-const tokenService = new TokenService(process.env.JWT_SECRET_KEY ?? 'gLzIskLIuMl/uBq9yHbIIODoRn+9WDiw1/8mrO+nTeQ')
-const authService = new AuthService(userRepository, hashService, tokenService);
-const authController = new AuthController(authService);
+const authController = new AuthController(serviceFactory.getAuthService());
 
 const authRoutes = Router();
 

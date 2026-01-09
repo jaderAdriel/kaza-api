@@ -1,9 +1,16 @@
 import express from 'express';
-import { routes } from './routes/index.js';
+
+import { ServiceFactory } from './services/ServiceFactory.js';
+
+export const serviceFactory = new ServiceFactory();
 
 const app = express();
 
-app.use(express.json());
-app.use(routes);
+async function bootstrap() {
+    const { routes } = await import('./routes/index.js')
+    app.use(express.json());
+    app.use(routes);
+}
 
-export { app };
+
+export { app, bootstrap as bootstrapApp };
