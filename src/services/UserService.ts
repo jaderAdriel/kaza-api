@@ -1,7 +1,6 @@
-import { UserEntity } from "@/domain/entities/User.js";
-import bcrypt from 'bcrypt';
+import { UserEntity } from "@/domain/entities/UserEntity.js";
 import type { UserRepository } from "../repositories/UserRepository.js";
-import { CreateUserDto, UpdateUserDto, UserResponseDto } from "@/dto/user.dto.js";
+import { CreateUserDto, UserResponseDto } from "@/dto/user.dto.js";
 import { UserMapper } from "@/mapper/UserMapper.js";
 import { HashService } from "./HashService.js";
 

@@ -1,7 +1,6 @@
 import { UserService } from "@/services/UserService";
 import type { UserRepository } from "@/repositories/UserRepository";
-import { UserMapper } from "@/mapper/UserMapper";
-import { UserEntity, UserProps } from "@/domain/entities/User";
+import { UserEntity } from "@/domain/entities/UserEntity";
 import { HashService } from "@/services/HashService";
 
 describe("UserService", () => {

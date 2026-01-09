@@ -1,5 +1,4 @@
-import { UserProps } from "@/domain/entities/User";
-import { Schema, model, Document, ObjectId } from "mongoose";
+import { Schema, model, Document } from "mongoose";
 
 export interface UserDocument extends Document {
     name: string;
