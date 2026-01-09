@@ -9,5 +9,6 @@ const authController = new AuthController(serviceFactory.getAuthService());
 const authRoutes = Router();
 
 authRoutes.post('/login', validate(SignInRequestSchema), (req, res) => authController.signIn(req, res));
+authRoutes.post('/refresh', (req, res) => authController.refresh(req, res));
 
 export { authRoutes };

@@ -1,8 +1,9 @@
+import { TokenEntity } from "@/domain/entities/TokenEntity.js";
 import type { UserRepository } from "../repositories/UserRepository.js";
 import { HashService } from "./HashService.js";
-import { sign } from 'jsonwebtoken'
 import { TokenService } from "./TokenService.js";
-import { AuthSignInResponseDto, SignInRequestDto, SignInResponse } from "@/dto/auth.dto.js";
+import { AuthSignInResponseDto, SignInRequestDto } from "@/dto/auth.dto.js";
+import { UnauthorizedError } from "@/errors/AppError.js";
 
 export class AuthService {
     private userRepository: UserRepository;
@@ -26,6 +27,7 @@ export class AuthService {
             throw new Error(`User with email '${dto.email}' don't exists`);
         }
 
+
         const passwordsMatchs = await this.hashService.compare(dto.password, foundedUser.getHashedPassword());
 
         if (!passwordsMatchs) {
@@ -36,12 +38,33 @@ export class AuthService {
             user_id: foundedUser.id
         });
 
-        const refreshToken = this.tokenService.generateRefreshToken();
+        const refreshToken = this.tokenService.generateRefreshToken(foundedUser.id);
+
+        await this.tokenService.revokeAllTokens(foundedUser.id);
+        
+        await this.tokenService.save(refreshToken);
 
         return {
             accessToken: accessToken,
             refreshToken: refreshToken
         }
+    }
 
+    public async refresh(hash: string): Promise<string> {
+        const refreshToken = await this.tokenService.findByHash(hash);
+
+        if (refreshToken == null || !refreshToken.isValid()) {
+            throw new UnauthorizedError("Invalid token")
+        }
+
+        const accessToken = this.tokenService.generateAccessToken({
+            user_id: refreshToken.userId
+        });
+
+        return accessToken;
+    }
+
+    public async signOut(userId: string) {
+        this.tokenService.revokeAllTokens(userId);
     }
 }

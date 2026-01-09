@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import type { AuthService } from "../services/AuthService.js";
-import { CreateUserDto, UserResponseDto } from "@/dto/user.dto.js";
 import { SignInRequestDto, SignInResponse } from "@/dto/auth.dto.js";
+import { RequestWU } from "@/types/Request.js";
 
 export class AuthController {
     private authService: AuthService;
@@ -14,14 +14,29 @@ export class AuthController {
 
         const signInDto = req.body as SignInRequestDto;
 
-        const response = await this.authService.signIn(signInDto);
+        const { accessToken, refreshToken } = await this.authService.signIn(signInDto);
 
-        res.cookie('refreshToken', response.refreshToken, {
-            httpOnly: true
-        })
+        res.cookie('refreshToken', refreshToken.hash, {
+            httpOnly: true,
+            expires: refreshToken.expiresAt
+        });
 
         return res.status(200).json({
-            "accessToken": response.accessToken
+            accessToken: accessToken
+        });
+    }
+
+    public async refresh(req: Request, res: Response) {
+        const token = req.cookies?.refreshToken;
+
+        if (!token) {
+            res.status(401).json("Token not founded");
+        }
+
+        const accessToken = await this.authService.refresh(token);
+
+        return res.status(200).json({
+            accessToken: accessToken
         });
     }
 }

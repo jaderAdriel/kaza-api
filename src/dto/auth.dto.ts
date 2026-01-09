@@ -1,9 +1,10 @@
+import { TokenEntity } from "@/domain/entities/TokenEntity";
 import z from "zod";
 
 
 export interface AuthSignInResponseDto {
     accessToken: string,
-    refreshToken: string
+    refreshToken: TokenEntity
 }
 
 export type SignInResponse = Pick<AuthSignInResponseDto, 'accessToken'>;

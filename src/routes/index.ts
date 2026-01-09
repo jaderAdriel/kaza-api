@@ -1,4 +1,4 @@
-import { response, Router } from 'express';
+import { Router } from 'express';
 import { userRoutes } from './user.routes.js';
 import mongoose from 'mongoose';
 import { authRoutes } from './auth.routes.js';
