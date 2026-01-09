@@ -1,6 +1,5 @@
 import { serviceFactory } from "@/app";
 import { Request, Response, NextFunction } from "express";
-import { log } from "node:console";
  
 export async function isLogged(req: Request, res: Response, next: NextFunction) : Promise<void> {
     const tokenService = serviceFactory.getTokenService();

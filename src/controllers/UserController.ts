@@ -48,7 +48,7 @@ export class UserController {
             throw new UnauthorizedError();
         }
 
-        const user = this.userService.get(id);
+        this.userService.delete(id);
 
         return res.status(204).send();
     }

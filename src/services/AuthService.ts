@@ -1,4 +1,4 @@
-import { TokenEntity } from "@/domain/entities/TokenEntity.js";
+
 import type { UserRepository } from "../repositories/UserRepository.js";
 import { HashService } from "./HashService.js";
 import { TokenService } from "./TokenService.js";

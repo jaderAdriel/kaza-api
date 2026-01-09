@@ -1,13 +1,12 @@
 import { UnauthorizedError } from "@/errors/AppError";
 import { DomainValidationError } from "@/errors/DomainError";
-import { PersistanceError } from "@/errors/PersistanceError";
 import { NextFunction, Request, Response } from "express";
 import logger from "node:console";
 import { ZodError } from "zod";
 
 
 export function errorHandler(
-    err: any,
+    err: Error,
     req: Request,
     res: Response,
     next: NextFunction
@@ -38,4 +37,6 @@ export function errorHandler(
     res.status(500).send({
         errors: [{ message: 'Something went wrong' }],
     });
+
+    next(err);
 }

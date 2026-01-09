@@ -1,7 +1,6 @@
 import type { Request, Response } from "express";
 import type { AuthService } from "../services/AuthService.js";
 import { SignInRequestDto, SignInResponse } from "@/dto/auth.dto.js";
-import { RequestWU } from "@/types/Request.js";
 
 export class AuthController {
     private authService: AuthService;

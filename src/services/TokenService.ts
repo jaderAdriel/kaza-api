@@ -1,7 +1,7 @@
-import { JwtPayload, sign, verify, decode } from 'jsonwebtoken';
+import { JwtPayload, sign, verify } from 'jsonwebtoken';
 import { TokenRepository } from '@/repositories/TokenRepository';
 import { TokenEntity } from '@/domain/entities/TokenEntity';
-import { TokenPayload } from '@/types/Request';
+import { TokenPayload } from '@/dto/auth.dto';
 
 export class TokenService {
     private secret: string;
@@ -29,7 +29,8 @@ export class TokenService {
             }
 
             return decoded as TokenPayload;
-
+            
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
             return false;
         }
