@@ -23,5 +23,7 @@
     "paths": {
       "@/*": ["src/*"]
     }
-  }
+    
+  },
+  "include": ["src", "src/@types"]
 }

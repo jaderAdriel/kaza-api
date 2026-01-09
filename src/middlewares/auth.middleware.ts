@@ -1,9 +1,10 @@
 import { serviceFactory } from "@/app";
-import { RequestWU } from "@/types/Request";
 import { Request, Response, NextFunction } from "express";
+import { log } from "node:console";
  
 export async function isLogged(req: Request, res: Response, next: NextFunction) : Promise<void> {
     const tokenService = serviceFactory.getTokenService();
+    const userService = serviceFactory.getUserService();
 
     const errorMessage = (message?: string) => {
         return { message: message ?? 'Unauthorized', status: 401}
@@ -26,8 +27,7 @@ export async function isLogged(req: Request, res: Response, next: NextFunction) 
         return;
     }
 
-    const requestWithUser = req as RequestWU;
-    requestWithUser.userId = verifiedTokenPayload.sub;
-
+    const user = await userService.get(verifiedTokenPayload.sub);
+    req.user = user;
     next();
 }

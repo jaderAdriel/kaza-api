@@ -1,4 +1,5 @@
 import { TokenEntity } from "@/domain/entities/TokenEntity";
+import { JwtPayload } from "jsonwebtoken";
 import z from "zod";
 
 
@@ -15,3 +16,7 @@ export const SignInRequestSchema = z.object({
 });
 
 export type SignInRequestDto = z.infer<typeof SignInRequestSchema>;
+
+export interface TokenPayload extends JwtPayload {
+    name: string;
+}
