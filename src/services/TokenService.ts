@@ -1,6 +1,7 @@
-import { JwtPayload, sign, verify } from 'jsonwebtoken';
+import { JwtPayload, sign, verify, decode } from 'jsonwebtoken';
 import { TokenRepository } from '@/repositories/TokenRepository';
 import { TokenEntity } from '@/domain/entities/TokenEntity';
+import { TokenPayload } from '@/types/Request';
 
 export class TokenService {
     private secret: string;
@@ -19,10 +20,16 @@ export class TokenService {
         );
     }
 
-    public isValid(token: string): boolean {
+    public verify(token: string): TokenPayload | false {
         try {
-            const payload = verify(token, this.secret);
-            return true;
+            const decoded = verify(token, this.secret);
+
+            if (typeof decoded === 'string') {
+                return false;
+            }
+
+            return decoded as TokenPayload;
+
         } catch (err) {
             return false;
         }

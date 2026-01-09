@@ -1,14 +1,17 @@
 import { serviceFactory } from "@/app";
+import { RequestWU } from "@/types/Request";
 import { Request, Response, NextFunction } from "express";
  
 export async function isLogged(req: Request, res: Response, next: NextFunction) : Promise<void> {
+    const tokenService = serviceFactory.getTokenService();
+
     const errorMessage = (message?: string) => {
         return { message: message ?? 'Unauthorized', status: 401}
     }
 
     const authorization = req.headers.authorization;
     
-    // gets the second part = Authorization: Bearer <token>
+    // authorization = 'Bearer <token>'
     const accessToken = authorization?.split(' ')[1];
 
     if (authorization === undefined || authorization === null || accessToken == null ) {
@@ -16,12 +19,15 @@ export async function isLogged(req: Request, res: Response, next: NextFunction) 
         return;
     }
 
-    const isValid = serviceFactory.getTokenService().isValid(accessToken);
+    const verifiedTokenPayload = tokenService.verify(accessToken);
 
-    if (!isValid) {
+    if (!verifiedTokenPayload || verifiedTokenPayload.sub == undefined ) {
         res.status(401).json(errorMessage("Invalid Token")).send();
         return;
     }
+
+    const requestWithUser = req as RequestWU;
+    requestWithUser.userId = verifiedTokenPayload.sub;
 
     next();
 }

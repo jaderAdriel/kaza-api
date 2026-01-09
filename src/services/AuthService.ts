@@ -34,8 +34,9 @@ export class AuthService {
             throw new Error(`Wrong password`);
         }
 
-        const accessToken = this.tokenService.generateAccessToken({
-            user_id: foundedUser.id
+        const accessToken = this.tokenService.generateAccessToken({ 
+            sub: foundedUser.id, 
+            name: foundedUser.getName() 
         });
 
         const refreshToken = this.tokenService.generateRefreshToken(foundedUser.id);
